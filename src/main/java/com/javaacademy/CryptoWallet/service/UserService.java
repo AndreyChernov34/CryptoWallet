@@ -28,7 +28,7 @@ public class UserService {
             currentUser.setPassword(newPassword);
             userRepository.saveUser(currentUser);
         } else {
-            throw new RuntimeException("Пароль неверный");
+            throw new RuntimeException("Старый пароль неверный");
         }
     }
 }

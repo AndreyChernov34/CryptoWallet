@@ -36,7 +36,7 @@ public class CryptoAccountController {
             return cryptoAccountService.createCryptoAccount(createCryptoAccountDto.getUsername(), CryptoCurrency
                     .valueOf(createCryptoAccountDto.getCryptoType()));
         } else {
-            throw new RuntimeException("Валюта задана неправильно");
+            throw new RuntimeException("Криптовалюта задана неправильно");
         }
     }
 
