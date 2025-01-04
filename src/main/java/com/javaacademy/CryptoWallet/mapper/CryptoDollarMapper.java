@@ -1,4 +1,4 @@
-package com.javaacademy.CryptoWallet.service;
+package com.javaacademy.CryptoWallet.mapper;
 
 import com.javaacademy.CryptoWallet.entity.CryptoCurrency;
 import com.jayway.jsonpath.JsonPath;
@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 @Profile("prod")
 @Service
 @Slf4j
-public class CryptoDollarService {
+public class CryptoDollarMapper {
     private final OkHttpClient okHttpClient = new OkHttpClient();
-    @Value("${currency.url}")
+    @Value("${currency.usd.url}")
     private String url;
-    @Value("${currency.header}")
+    @Value("${currency.usd.header}")
     private String header;
-    @Value("${currency.token}")
+    @Value("${currency.usd.token}")
     private String token;
 
 

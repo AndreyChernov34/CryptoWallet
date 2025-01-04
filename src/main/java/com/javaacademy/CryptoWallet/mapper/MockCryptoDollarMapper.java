@@ -1,4 +1,4 @@
-package com.javaacademy.CryptoWallet.service;
+package com.javaacademy.CryptoWallet.mapper;
 
 import com.javaacademy.CryptoWallet.entity.CryptoCurrency;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 
 @Profile("local")
 @Service
-public class MockCryptoDollarService {
-    @Value("${MockPrice}")
-    private BigDecimal mockPrice;
+public class MockCryptoDollarMapper {
+    @Value("${MockDollarPrice}")
+    private BigDecimal mockDollarPrice;
 
     public BigDecimal getDollarPrice(CryptoCurrency cryptoCurrency) {
-        return mockPrice;
+        return mockDollarPrice;
     }
 }
