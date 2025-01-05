@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Profile("local")
 @Service
-public class MockCryptoDollarMapper {
+public class MockCryptoDollarMapper extends CryptoDollarMapper {
     @Value("${MockDollarPrice}")
     private BigDecimal mockDollarPrice;
 

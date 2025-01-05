@@ -20,7 +20,6 @@ public class UserController {
 
     @PostMapping("/user/signup")
     public void newUser(@RequestBody NewUserDto newUserDto) throws RuntimeException {
-        log.info(newUserDto.toString());
         userService.newUser(new User(newUserDto.getLogin(), newUserDto.getEmail(), newUserDto.getPassword()));
     }
 

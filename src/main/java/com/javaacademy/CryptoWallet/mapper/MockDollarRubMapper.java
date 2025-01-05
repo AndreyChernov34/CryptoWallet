@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MockDollarRubMapper {
+public class MockDollarRubMapper extends  DollarRubMapper{
     private final OkHttpClient okHttpClient = new OkHttpClient();
     @Value("${MockDollarPrice}")
     private BigDecimal mockDollarPrice;

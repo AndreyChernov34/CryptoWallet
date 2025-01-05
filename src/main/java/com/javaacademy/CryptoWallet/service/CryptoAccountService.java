@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 
 @Service
 @RequiredArgsConstructor
@@ -56,21 +55,21 @@ public class CryptoAccountService {
 
     public void refillRubCryptoAccount(UUID uuid, BigDecimal rubAmount) {
         CryptoAccount cryptoAccount = cryptoAccountRepository.getByUUIDCryptoAccount(uuid);
-            cryptoAccount.setCount(cryptoAccount.getCount().add(rubCryptoExchange(cryptoAccount, rubAmount)));
+        cryptoAccount.setCount(cryptoAccount.getCount().add(rubCryptoExchange(cryptoAccount, rubAmount)));
     }
 
     public String withdrawalRubCryptoAccount(UUID uuid, BigDecimal rubAmount) {
         CryptoAccount cryptoAccount = cryptoAccountRepository.getByUUIDCryptoAccount(uuid);
 
-            if (cryptoAccount.getCount().compareTo(rubCryptoExchange(cryptoAccount, rubAmount)) >= 0) {
-                // снятие суммы со счета
-                cryptoAccount.setCount(cryptoAccount.getCount().subtract(rubCryptoExchange(cryptoAccount, rubAmount)));
-                return "Операция прошла успешно. Продано " + rubCryptoExchange(cryptoAccount, rubAmount) + " "
-                        + cryptoAccount.getCurrency();
+        if (cryptoAccount.getCount().compareTo(rubCryptoExchange(cryptoAccount, rubAmount)) >= 0) {
+            // снятие суммы со счета
+            cryptoAccount.setCount(cryptoAccount.getCount().subtract(rubCryptoExchange(cryptoAccount, rubAmount)));
+            return "Операция прошла успешно. Продано " + rubCryptoExchange(cryptoAccount, rubAmount) + " "
+                    + cryptoAccount.getCurrency();
 
-            } else {
-                throw new RuntimeException("Недостаточно средств на счете");
-            }
+        } else {
+            throw new RuntimeException("Недостаточно средств на счете");
+        }
     }
 
     public BigDecimal getRubBalanceCryptoAccount(UUID uuid) {
@@ -81,10 +80,9 @@ public class CryptoAccountService {
     public BigDecimal getRubBalanceAllCryptoAccount(String login) {
         List<CryptoAccount> cryptoAccountList = cryptoAccountRepository.getByLoginCryptoAccount(login);
         BigDecimal rubAmount = BigDecimal.ZERO;
-        for (CryptoAccount cryptoAccount: cryptoAccountList) {
+        for (CryptoAccount cryptoAccount : cryptoAccountList) {
             rubAmount = rubAmount.add(getRubBalanceCryptoAccount(cryptoAccount.getUuid()));
-            log.info(rubAmount.toString());
-            }
+        }
         return rubAmount;
     }
 
