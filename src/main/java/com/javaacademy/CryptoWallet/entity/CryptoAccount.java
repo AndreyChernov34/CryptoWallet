@@ -11,6 +11,6 @@ import java.util.UUID;
 public class CryptoAccount {
     private final String login;
     private final CryptoCurrency currency;
-    private BigDecimal count;
+    private BigDecimal count = BigDecimal.ZERO;
     private final UUID uuid;
 }

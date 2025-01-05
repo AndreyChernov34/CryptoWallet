@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Profile("prod")
 @Service
@@ -19,12 +20,12 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class DollarRubMapper {
     private final OkHttpClient okHttpClient = new OkHttpClient();
-    @Value("${currency.usd.url}")
+    @Value("${currency.rub.url}")
     private String url;
 
     public BigDecimal dollarRubConvert(BigDecimal dollarPrice) {
         BigDecimal exchangeRate = rubExchangeRate();
-        return dollarPrice.divide(exchangeRate);
+        return dollarPrice.divide(exchangeRate, 8, RoundingMode.HALF_UP);
     }
 
     public BigDecimal rubDollarConvert(BigDecimal rubPrice) {
@@ -34,15 +35,14 @@ public class DollarRubMapper {
 
     private BigDecimal rubExchangeRate() {
         Request request = new Request.Builder().get().url(url).build();
-        try {
-            Response response = okHttpClient.newCall(request).execute();
+        try (Response response = okHttpClient.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                log.info(response.toString());
-                return JsonPath.parse(response.body().string())
-                        .read(JsonPath.compile("$.rates.USD"),
+                BigDecimal result = JsonPath.parse(response.body().string())
+                        .read(JsonPath.compile("$['rates']['USD']"),
                                 BigDecimal.class);
+                return result;
             } else {
-                throw new RuntimeException("Запрос курса рубля закончился неудачно");
+                throw new RuntimeException("Запрос курса рубля закончился неудачно" + response.code());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

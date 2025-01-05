@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+
 @Profile("prod")
 @Service
 @Slf4j
@@ -31,21 +32,18 @@ public class CryptoDollarMapper {
                 .url(url + "/simple/price?ids=" + cryptoCurrency.fullname + "&vs_currencies=usd")
                 .header(header, token)
                 .build();
-        try {
-            Response response = okHttpClient.newCall(request).execute();
+
+        try (Response response = okHttpClient.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                log.info(response.toString());
-                return JsonPath.parse(response.body().string())
-                        .read(JsonPath.compile("$['" + cryptoCurrency.fullname + "']['usd']"),
-                                BigDecimal.class);
+                String jsonString = response.body().string();
+                String jsonPath = "$['" + cryptoCurrency.fullname + "']['usd']";
+                response.close();
+                return JsonPath.parse(jsonString).read(jsonPath, BigDecimal.class);
             } else {
                 throw new RuntimeException("Запрос курса доллара закончился неудачно");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
-
 }
