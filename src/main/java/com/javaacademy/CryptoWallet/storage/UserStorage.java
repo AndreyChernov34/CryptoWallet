@@ -13,7 +13,11 @@ public class UserStorage {
     private final Map<String, User> userMap = new HashMap<String, User>();
 
     public User getByLogin(String login) {
-        return userMap.get(login);
+        if (userMap.containsKey(login)) {
+            return userMap.get(login);
+        } else {
+            throw new RuntimeException("Нет такого пользователя");
+        }
     }
 
     public void createUser(User user) throws RuntimeException {

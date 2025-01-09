@@ -1,5 +1,6 @@
 package com.javaacademy.CryptoWallet.mapper;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -13,16 +14,17 @@ import java.math.BigDecimal;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MockDollarRubMapper extends  DollarRubMapper{
+@Schema(description = "Конвертер курса доллара")
+public class LocalDollarRubMapper implements DollarRubMapper {
     private final OkHttpClient okHttpClient = new OkHttpClient();
-    @Value("${MockDollarPrice}")
-    private BigDecimal mockDollarPrice;
+    @Value("${DollarPrice}")
+    private BigDecimal dollarPrice;
 
-    public BigDecimal dollarRubConvert(BigDecimal dollarPrice) {
-        return dollarPrice.divide(mockDollarPrice);
+    public BigDecimal dollarRubConvert(BigDecimal dollarAmount) {
+        return dollarAmount.divide(dollarPrice);
     }
 
-    public BigDecimal rubDollarConvert(BigDecimal rubPrice) {
-        return rubPrice.multiply(mockDollarPrice);
+    public BigDecimal rubDollarConvert(BigDecimal rubAmount) {
+        return rubAmount.multiply(dollarPrice);
     }
 }
